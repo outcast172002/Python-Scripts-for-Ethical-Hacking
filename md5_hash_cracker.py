@@ -1,0 +1,25 @@
+#Latin 1 encoding used to ensure this program will run with all wordlists including rockyou.txt
+
+import hashlib
+import pyfiglet
+
+GREEN = '\033[32m'
+RED = "\033[31m"
+RESET = '\033[0m'
+
+ascii_banner = pyfiglet.figlet_format("HASH CRACKER for MD 5")
+print(ascii_banner)
+
+hash_input = str(input('Enter MD5 hash to be cracked: '))
+wordlist_location = str(input('Enter wordlist file location: '))
+
+with open(wordlist_location, 'r', encoding='latin-1') as file:
+    for line in file.readlines():
+        hash_ob = hashlib.md5(line.strip().encode())
+        hashed_pass = hash_ob.hexdigest()
+        if hashed_pass == hash_input:
+            print(f"{GREEN}PASSWORD FOUND --> {RESET}"  + line.strip()) 
+            break          
+    if hashed_pass != hash_input:
+        print(f"{RED}PASSWORD NOT FOUND IN WORDLIST! {RESET}")
+        exit(0)
